@@ -4,6 +4,7 @@ FROM ubuntu:utopic
 MAINTAINER Christian Dietrich <stettberger@dokucode.de>
 
 # Install Packages required to build FAIL*
+RUN sudo sed -i -e 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y  \
     binutils-dev        \
@@ -13,6 +14,8 @@ RUN apt-get install -y  \
     libboost-regex-dev  \
     libboost-system-dev \
     libboost-thread-dev \
+    libboost-coroutine-dev \
+    libboost-context-dev \
     libdwarf-dev        \
     libelf-dev          \
     libfontconfig1-dev  \
@@ -21,7 +24,8 @@ RUN apt-get install -y  \
     libpcl1-dev         \
     libprotobuf-dev     \
     libsvga1-dev        \
-    llvm-3.4-dev        \
+    llvm-dev            \
+    llvm                \
     screen              \
     protobuf-compiler   \
     wget                \
@@ -46,7 +50,7 @@ ENV HOME /home/fail
 WORKDIR /home/fail
 
 # Get AspectC++ v1.2 for 64 Bit
-RUN wget http://www.aspectc.org/releases/1.2/ac-bin-linux-x86-64bit-1.2.tar.gz
+RUN wget --no-check-certificate http://www.aspectc.org/releases/1.2/ac-bin-linux-x86-64bit-1.2.tar.gz
 RUN tar xvzf ac-bin-linux-x86-64bit-1.2.tar.gz; mkdir bin; mv aspectc++/ac++ aspectc++/ag++ bin/; rm -rf aspectc++
 ENV PATH /home/fail/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
